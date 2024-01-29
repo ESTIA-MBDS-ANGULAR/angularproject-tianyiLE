@@ -1,0 +1,9 @@
+.rendu {
+    color: green;
+    background-color: orange;
+}
+
+.nonRendu{
+    color: white;
+    background-color: blue;
+}
