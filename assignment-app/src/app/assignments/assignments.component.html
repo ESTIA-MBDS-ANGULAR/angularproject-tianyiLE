@@ -1,22 +1,4 @@
-<p>assignments works!</p>
-<h1>{{title}}</h1>
-<h2>Angular 16</h2>
-
-<div *ngFor="let assignment of assignments"
-[ngClass]="{'rendu':assignment.rendu, 'nonRendu': !assignment.rendu}">
-<p *ngIf="assignment.rendu;else nonsoumis">
-    le devoir {{assignment.nom}} a ete rendu le  {{assignment.dateDeRendu | date: 'dd/MM/yyyy'}}
- </p>
- <ng-template #nonsoumis>
-    <p>
-        le devoir {{assignment.nom}} doit etre rendu le  {{assignment.dateDeRendu | date: 'dd/MM/yyyy'}}
-     </p>
- </ng-template>
-</div>
-
-
-<h2>Angular 17</h2>
-
+<!-- <h2>Angular 17</h2>
 @for (assignment of assignments ; track assignment.nom) {
     <div  [ngClass]="{'rendu':assignment.rendu, 'nonRendu': !assignment.rendu}">
         @if (assignment.rendu) {
@@ -29,8 +11,60 @@
                 </p>
            }
     </div>
-    
-  
-}
+} -->
+<p>
+    <mat-toolbar color="primary">
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="opened = !opened">
+            <mat-icon >menu</mat-icon>
+        </button>
+        <span>My App</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon home-icon" aria-label="Example icon button with a home icon">
+            <mat-icon>home</mat-icon>
+        </button>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with person icon">
+            <mat-icon>person</mat-icon>
+        </button>
+    </mat-toolbar>
+</p>
+<mat-drawer-container class="example-container">
+    <mat-drawer mode="side" [opened]="opened" mode="push"> <!-- 侧边内容 --><mat-list role="list">
+        <mat-list-item role="listitem">Liste des devoirs</mat-list-item>
+        <mat-list-item role="listitem">Ajout d'un devoir</mat-list-item>
+        <mat-list-item role="listitem">Modification d'un devoir</mat-list-item>
+        <mat-list-item role="listitem">Suppression d'un devoir</mat-list-item>
+        <mat-list-item role="listitem">Génération de données de test</mat-list-item>
+      </mat-list>
+      
+        
+    </mat-drawer>
+    <mat-drawer-content> <!-- 主要内容 -->
+        <form ngForm (submit)="onSubmit() ;assignmentForm.reset()" #assignmentForm class='form'>
+            <mat-form-field>
+                <input matInput [(ngModel)]="nomDevoir" name="nom" placeholder="Nom du devoir" required>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Date de rendu" [(ngModel)]="dateDeRendu" name="date"
+                    required>
+                <mat-datepicker-toggle matTextSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        
+            <p>{{nomDevoir}}</p>
+            <button [disabled]="!ajouteActive" mat-stroked-button color="primary">Ajouter un devoir</button>
+        </form>
+        
+        <div *ngFor="let assignment of assignments" [ngClass]="{'rendu':assignment.rendu, 'nonRendu': !assignment.rendu}">
+            <p *ngIf="assignment.rendu;else nonsoumis">
+                le devoir {{assignment.nom}} a ete rendu le {{assignment.dateDeRendu | date: 'dd/MM/yyyy'}}
+            </p>
+            <ng-template #nonsoumis>
+                <p>
+                    le devoir {{assignment.nom}} doit etre rendu le {{assignment.dateDeRendu | date: 'dd/MM/yyyy'}}
+                </p>
+            </ng-template>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>
 
 
