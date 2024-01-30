@@ -7,7 +7,8 @@ import { Directive, ElementRef } from '@angular/core';
 export class RenduDirective {
 
   constructor(el: ElementRef) {
-    el.nativeElement.style.fontSize = '30px'
+    el.nativeElement.style.fontWeight = 'bold'
+    el.nativeElement.style.color = 'green'
    }
 
 }

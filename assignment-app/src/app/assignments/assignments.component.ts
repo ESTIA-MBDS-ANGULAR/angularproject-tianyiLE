@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { RenduDirective } from '../shared/rendu.directive';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +12,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { Assignment } from './assignment.model';
+import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
+import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
+import { AssignmentsService } from '../shared/assignments.service';
 
 @Component({
   selector: 'app-assignments',
@@ -28,22 +31,23 @@ import { Assignment } from './assignment.model';
     MatNativeDateModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    AssignmentDetailComponent,
+    AddAssignmentComponent
   ],
   templateUrl: './assignments.component.html',
   styleUrls: ['./assignments.component.css'] // 注意是 styleUrls，且是数组
 })
+
 export class AssignmentsComponent implements OnInit {
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.ajouteActive = true
-    }, 2000);
-  }
+  
   opened: boolean = false
+  formVisible = false;
   title = 'Hello AssignmentsComponent';
   ajouteActive = false
   nomDevoir: string = ''
   dateDeRendu: Date = new Date()
+  assignmentSelectionne!:Assignment;
   assignments: Assignment[] = [
     {
       nom: 'TP Angular 1',
@@ -61,6 +65,11 @@ export class AssignmentsComponent implements OnInit {
       rendu: true
     }
   ]
+
+  constructor(private assignmentsService:AssignmentsService) {}
+  ngOnInit(): void {
+    this.getAssignments()
+  }
   onSubmit() {
     console.log(this.nomDevoir);
     const newAssignment = new Assignment()
@@ -68,5 +77,27 @@ export class AssignmentsComponent implements OnInit {
     newAssignment.dateDeRendu = this.dateDeRendu
     newAssignment.rendu = false
     this.assignments.push(newAssignment)
+  }
+  assignmentClique(assignment: Assignment) {
+    this.assignmentSelectionne = assignment
+  }
+  onAddAssignmentBtnClick() {
+    this.formVisible = true;
+    }
+  onNouvelAssignment(event:Assignment) {
+    // this.assignments.push(event)
+    this.assignmentsService.addAssignment(event).subscribe(message => console.log(message)
+    )
+    this.formVisible =false
+  }
+  onDevoirRenduVert() {
+    const renduAssignment = this.assignments.find(item => item.nom === this.assignmentSelectionne.nom)
+    if(renduAssignment) {
+      renduAssignment.rendu = true
+    }
+  }
+
+  getAssignments() {
+    this.assignmentsService.getAssignments().subscribe(assignments => this.assignments = assignments)
   }
 }
