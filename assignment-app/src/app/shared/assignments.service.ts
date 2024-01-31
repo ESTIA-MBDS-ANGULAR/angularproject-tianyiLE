@@ -7,6 +7,7 @@ import { LoggingService } from './logging.service';
   providedIn: 'root'
 })
 export class AssignmentsService {
+  backendURL = 'http://localhost:8010/api/assignments'
   assignments: Assignment[] = [
     {
       id: 1,

@@ -1,4 +1,11 @@
 <h1>
     <nav><a routerLink="/home">{{title}}</a></nav>
 </h1>
+<mat-slide-toggle color="primary" (click)="login()">Slide me!</mat-slide-toggle>
+@if (true) {
+    <button mat-raised-button color="primary">Se connecter</button>
+} @else {
+    <button mat-raised-button color="primary">se Déconnecter</button>
+}
+
 <router-outlet></router-outlet>

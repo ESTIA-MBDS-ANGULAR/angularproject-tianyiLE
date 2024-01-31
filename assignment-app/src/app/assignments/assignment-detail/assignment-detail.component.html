@@ -12,9 +12,14 @@
             <!-- <a [routerLink]="['/assignment', 1, 'edit']" >
                 <button (click)="onClickEdit()" mat-stroked-button color="primary">Edit</button>
             </a> -->
-            <button (click)="onClickEdit()" mat-stroked-button color="primary">Edit</button>
+            <button (click)="onClickEdit()" 
+            [disabled]="!isAdmin()"
+            mat-stroked-button color="primary">Edit</button>
             <mat-checkbox *ngIf="!assignmentTransmis.rendu" (click)="onAssignmentRendu()" class="example-margin">Devoir Rendu</mat-checkbox>
-            <button class="supprimerBtn" mat-flat-button color="warn" (click)="onDelete()">Supprimer</button>
+            <button (click)="onDelete()"
+            [disabled]="!isAdmin()"
+            class="supprimerBtn" mat-flat-button color="warn" 
+            >Supprimer</button>
         </div>
     </mat-card-content>
   </mat-card>

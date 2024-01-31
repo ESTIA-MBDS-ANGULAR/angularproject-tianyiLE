@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { AssignmentsService } from '../../shared/assignments.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../shared/auth.service';
 // ActivatedRoute用来获取 http传递的属性
 
 @Component({
@@ -26,7 +27,7 @@ export class AssignmentDetailComponent implements OnInit {
   @Output() devoirRenduVert = new EventEmitter()
 
 
-  constructor(private assignmentsService: AssignmentsService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private assignmentsService: AssignmentsService, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
   ngOnInit(): void {
     this.getAssignment()
   }
@@ -35,7 +36,6 @@ export class AssignmentDetailComponent implements OnInit {
     const id = +this.route.snapshot.params['id']
     this.assignmentsService.getAssignment(id).subscribe(assignment => {
       this.assignmentTransmis = assignment;
-      console.log(this.assignmentTransmis);
     })
   }
 
@@ -71,7 +71,10 @@ export class AssignmentDetailComponent implements OnInit {
     if(this.assignmentTransmis){
       this.router.navigate(["/assignment", this.assignmentTransmis.id, 'edit'], {queryParams: {nom: this.assignmentTransmis.nom}, fragment: 'edition'})
       console.log('运行了吗');
-      
     } 
+  }
+
+  isAdmin() :boolean {
+    return this.authService.loggedIn
   }
 }

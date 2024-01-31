@@ -4,6 +4,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
+  users= [
+    {
+      nom: 'Peter',
+      role: 'user',
+      password: '123456'
+    },
+    {
+      nom: 'Peter',
+      role: 'admin',
+      password: '12345678'
+    }
+  ]
+
   loggedIn = false
 
   constructor() { }
@@ -22,6 +35,6 @@ export class AuthService {
         resolve(this.loggedIn)
       }
     )
-      return isUserAdmin
+    return isUserAdmin
   }
 }
