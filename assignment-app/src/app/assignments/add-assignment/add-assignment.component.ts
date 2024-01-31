@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, /*EventEmitter, Output*/ OnInit } from '@angular/core';
 import { RenduDirective } from '../../shared/rendu.directive';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -37,21 +37,22 @@ import { AssignmentsService } from '../../shared/assignments.service';
   templateUrl: './add-assignment.component.html',
   styleUrl: './add-assignment.component.css'
 })
-export class AddAssignmentComponent implements OnInit{
+export class AddAssignmentComponent implements OnInit {
 
-  @Output() nouvelAssignment = new EventEmitter<Assignment>
-  ngOnInit(): void {}
-  constructor(private assignmentsService:AssignmentsService) {}
+  // @Output() nouvelAssignment = new EventEmitter<Assignment>
+  ngOnInit(): void { }
+  constructor(private assignmentsService: AssignmentsService) { }
   nomDevoir: string = ''
   dateDeRendu: Date = new Date()
   ajouteActive = true
-  assignments!: Assignment[] 
+  assignments!: Assignment[]
   onSubmit() {
     console.log(this.nomDevoir);
     const newAssignment = new Assignment()
     newAssignment.nom = this.nomDevoir
     newAssignment.dateDeRendu = this.dateDeRendu
     newAssignment.rendu = false
-    this.nouvelAssignment.emit(newAssignment)
+    // this.nouvelAssignment.emit(newAssignment)
+    this.assignmentsService.addAssignment(newAssignment).subscribe(message => console.log(message))
   }
 }

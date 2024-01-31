@@ -9,6 +9,10 @@
             {{assignmentTransmis.dateDeRendu | date: 'dd/MM/yyyy'}}
         </mat-card-subtitle>
         <div class="card-actions">
+            <!-- <a [routerLink]="['/assignment', 1, 'edit']" >
+                <button (click)="onClickEdit()" mat-stroked-button color="primary">Edit</button>
+            </a> -->
+            <button (click)="onClickEdit()" mat-stroked-button color="primary">Edit</button>
             <mat-checkbox *ngIf="!assignmentTransmis.rendu" (click)="onAssignmentRendu()" class="example-margin">Devoir Rendu</mat-checkbox>
             <button class="supprimerBtn" mat-flat-button color="warn" (click)="onDelete()">Supprimer</button>
         </div>

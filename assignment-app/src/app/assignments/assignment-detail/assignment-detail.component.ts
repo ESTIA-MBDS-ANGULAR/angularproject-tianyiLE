@@ -5,7 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { AssignmentsService } from '../../shared/assignments.service';
-
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+// ActivatedRoute用来获取 http传递的属性
 
 @Component({
   selector: 'app-assignment-detail',
@@ -15,17 +16,27 @@ import { AssignmentsService } from '../../shared/assignments.service';
     MatCardModule,
     MatCheckboxModule,
     MatButtonModule,
+    RouterModule
   ],
   templateUrl: './assignment-detail.component.html',
   styleUrl: './assignment-detail.component.css'
 })
 export class AssignmentDetailComponent implements OnInit {
-  @Input() assignmentTransmis!: Assignment | null;
+  @Input() assignmentTransmis!: Assignment | null | undefined;
   @Output() devoirRenduVert = new EventEmitter()
 
 
-  constructor(private assignmentsService: AssignmentsService) { }
+  constructor(private assignmentsService: AssignmentsService, private route: ActivatedRoute, private router: Router) { }
   ngOnInit(): void {
+    this.getAssignment()
+  }
+
+  getAssignment() {
+    const id = +this.route.snapshot.params['id']
+    this.assignmentsService.getAssignment(id).subscribe(assignment => {
+      this.assignmentTransmis = assignment;
+      console.log(this.assignmentTransmis);
+    })
   }
 
   onCheckbox() {
@@ -36,7 +47,8 @@ export class AssignmentDetailComponent implements OnInit {
     if (this.assignmentTransmis) {
       this.assignmentTransmis.rendu = true
       this.assignmentsService.updateAssignment(this.assignmentTransmis).subscribe(message => console.log(message))
-    }else {
+      this.router.navigate(['/home'])//网页跳转
+    } else {
       console.error('Assignment is null, cannot Rendu.');
     }
   }
@@ -47,6 +59,7 @@ export class AssignmentDetailComponent implements OnInit {
         message => {
           console.log(message);
           this.assignmentTransmis = null; // 安全地将 assignmentTransmis 设置为 null
+          this.router.navigate(['/home'])//网页跳转
         }
       );
     } else {
@@ -54,5 +67,11 @@ export class AssignmentDetailComponent implements OnInit {
     }
   }
 
-
+  onClickEdit() {
+    if(this.assignmentTransmis){
+      this.router.navigate(["/assignment", this.assignmentTransmis.id, 'edit'], {queryParams: {nom: this.assignmentTransmis.nom}, fragment: 'edition'})
+      console.log('运行了吗');
+      
+    } 
+  }
 }

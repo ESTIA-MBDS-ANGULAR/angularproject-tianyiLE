@@ -15,6 +15,7 @@ import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { AssignmentsService } from '../shared/assignments.service';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-assignments',
@@ -33,7 +34,9 @@ import { AssignmentsService } from '../shared/assignments.service';
     MatSidenavModule,
     MatListModule,
     AssignmentDetailComponent,
-    AddAssignmentComponent
+    AddAssignmentComponent,
+    RouterOutlet,
+    RouterModule,
   ],
   templateUrl: './assignments.component.html',
   styleUrls: ['./assignments.component.css'] // 注意是 styleUrls，且是数组
@@ -48,23 +51,7 @@ export class AssignmentsComponent implements OnInit {
   nomDevoir: string = ''
   dateDeRendu: Date = new Date()
   assignmentSelectionne!:Assignment;
-  assignments: Assignment[] = [
-    {
-      nom: 'TP Angular 1',
-      dateDeRendu: new Date('2024-01-25'),
-      rendu: true
-    },
-    {
-      nom: 'TP Angular 2',
-      dateDeRendu: new Date('2024-01-26'),
-      rendu: false
-    },
-    {
-      nom: 'TP Angular 3',
-      dateDeRendu: new Date('2024-01-27'),
-      rendu: true
-    }
-  ]
+  assignments!: Assignment[] 
 
   constructor(private assignmentsService:AssignmentsService) {}
   ngOnInit(): void {
@@ -82,19 +69,18 @@ export class AssignmentsComponent implements OnInit {
     this.assignmentSelectionne = assignment
   }
   onAddAssignmentBtnClick() {
-    this.formVisible = true;
+    // this.formVisible = true;
     }
   onNouvelAssignment(event:Assignment) {
-    // this.assignments.push(event)
     this.assignmentsService.addAssignment(event).subscribe(message => console.log(message)
     )
     this.formVisible =false
   }
   onDevoirRenduVert() {
-    const renduAssignment = this.assignments.find(item => item.nom === this.assignmentSelectionne.nom)
-    if(renduAssignment) {
-      renduAssignment.rendu = true
-    }
+    // const renduAssignment = this.assignments.find(item => item.nom === this.assignmentSelectionne.nom)
+    // if(renduAssignment) {
+    //   renduAssignment.rendu = true
+    // }
   }
 
   getAssignments() {
