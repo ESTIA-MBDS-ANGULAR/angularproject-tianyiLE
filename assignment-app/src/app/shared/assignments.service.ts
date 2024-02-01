@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Assignment } from '../assignments/assignment.model';
 import { LoggingService } from './logging.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssignmentsService {
   backendURL = 'http://localhost:8010/api/assignments'
+  resultDeHttp:any
   assignments: Assignment[] = [
     {
       id: 1,
@@ -28,15 +30,20 @@ export class AssignmentsService {
       rendu: false
     }
   ]
-  constructor(private loggingService:LoggingService) { }
+  constructor(private loggingService:LoggingService, private http: HttpClient) { }
 
   getAssignment(id:number): Observable<Assignment | undefined> {
     const assignment:Assignment|undefined = this.assignments.find(item => item.id === id)
     return of(assignment)
   }
 
+
   getAssignments(): Observable<Assignment[]> {
     return of(this.assignments)
+  }
+
+  getAssignmentsByHttp(): Observable<Assignment[]> {
+    return this.http.get<Assignment[]>(this.backendURL)
   }
 
   addAssignment(assignment: Assignment): Observable<string> {

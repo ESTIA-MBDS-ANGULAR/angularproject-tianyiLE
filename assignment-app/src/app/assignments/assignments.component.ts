@@ -10,12 +10,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { AssignmentsService } from '../shared/assignments.service';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-assignments',
@@ -43,17 +44,17 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 })
 
 export class AssignmentsComponent implements OnInit {
-  
+
   opened: boolean = false
   formVisible = false;
   title = 'Hello AssignmentsComponent';
   ajouteActive = false
   nomDevoir: string = ''
   dateDeRendu: Date = new Date()
-  assignmentSelectionne!:Assignment;
-  assignments!: Assignment[] 
+  assignmentSelectionne!: Assignment;
+  assignments!: Assignment[]
 
-  constructor(private assignmentsService:AssignmentsService) {}
+  constructor(private assignmentsService: AssignmentsService, public authService: AuthService,private router: Router) { }
   ngOnInit(): void {
     this.getAssignments()
   }
@@ -68,19 +69,9 @@ export class AssignmentsComponent implements OnInit {
   assignmentClique(assignment: Assignment) {
     this.assignmentSelectionne = assignment
   }
-  onAddAssignmentBtnClick() {
-    // this.formVisible = true;
-    }
-  onNouvelAssignment(event:Assignment) {
-    this.assignmentsService.addAssignment(event).subscribe(message => console.log(message)
-    )
-    this.formVisible =false
-  }
-  onDevoirRenduVert() {
-    // const renduAssignment = this.assignments.find(item => item.nom === this.assignmentSelectionne.nom)
-    // if(renduAssignment) {
-    //   renduAssignment.rendu = true
-    // }
+
+  onAjouterAssignment() {
+    this.router.navigate(['/add'])
   }
 
   getAssignments() {

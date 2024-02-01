@@ -70,11 +70,10 @@ export class AssignmentDetailComponent implements OnInit {
   onClickEdit() {
     if(this.assignmentTransmis){
       this.router.navigate(["/assignment", this.assignmentTransmis.id, 'edit'], {queryParams: {nom: this.assignmentTransmis.nom}, fragment: 'edition'})
-      console.log('运行了吗');
     } 
   }
 
   isAdmin() :boolean {
-    return this.authService.loggedIn
+    return this.authService.isAdmin()
   }
 }

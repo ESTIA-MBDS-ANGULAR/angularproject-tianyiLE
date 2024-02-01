@@ -1,1 +1,28 @@
-<p>login-assignment works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>Choisir Role</mat-label>
+    <mat-select formControlName="role">
+      <mat-option value="user">user</mat-option>
+      <mat-option value="admin">admin</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Nom</mat-label>
+    <input matInput formControlName="nom">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>PassWord</mat-label>
+    <input matInput formControlName="password">
+  </mat-form-field>
+  <br>
+  <button mat-raised-button color="primary" type="submit">Submit</button>
+</form>
+
+
+        
+
+
+
+  
