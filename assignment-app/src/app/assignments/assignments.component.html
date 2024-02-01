@@ -1,6 +1,8 @@
 <main class="container">
     <div class="buttons-container">
-        <button [disabled]="!authService.loggedIn" class="ajouterBtn" mat-flat-button color="accent">
+        <button [disabled]="!authService.loggedIn" 
+        (click)="onAjouterAssignment()"
+        class="ajouterBtn" mat-flat-button color="accent">
             Ajouter Assignment
         </button>
     </div>

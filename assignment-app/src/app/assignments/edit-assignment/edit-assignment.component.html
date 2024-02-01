@@ -1,4 +1,5 @@
 <div class="container" *ngIf="assignment">
+    <h2>{{assignment.rendu}}</h2>
     <h1>Edition de l'assignment {{assignment.nom}}</h1>
     <form ngForm class="form" #formupdate (submit)="onSaveAssignment(); formupdate.reset(); ">
         <mat-form-field>

@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AssignmentsService {
-  backendURL = 'http://localhost:8010/api/assignments'
+  url = 'http://localhost:8010/api/assignments'
   resultDeHttp:any
   assignments: Assignment[] = [
     {
@@ -35,21 +35,21 @@ export class AssignmentsService {
   getAssignment(id:number): Observable<Assignment | undefined> {
     const assignment:Assignment|undefined = this.assignments.find(item => item.id === id)
     return of(assignment)
+    // return this.http.get<Assignment>(this.url + "/" + id)
   }
-
 
   getAssignments(): Observable<Assignment[]> {
     return of(this.assignments)
   }
 
   getAssignmentsByHttp(): Observable<Assignment[]> {
-    return this.http.get<Assignment[]>(this.backendURL)
+    return this.http.get<Assignment[]>(this.url)
   }
 
-  addAssignment(assignment: Assignment): Observable<string> {
+  addAssignment(assignment: Assignment): Observable<any> {
     this.assignments.push(assignment)
-
     return of('Assignment service: Assignment ajouté')
+    // return this.http.post<Assignment>(this.url, assignment)
   }
   
   updateAssignment(assignment: Assignment): Observable<string> {
