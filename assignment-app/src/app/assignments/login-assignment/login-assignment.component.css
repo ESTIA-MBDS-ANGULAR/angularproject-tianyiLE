@@ -9,3 +9,13 @@ button {
     margin-left: 30%;
     margin-right: 30%;
 }
+
+table {
+    width: 80%;
+    margin: 10%;
+}
+
+td {
+    padding: 5px;
+}
+
