@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { RenduDirective } from '../shared/rendu.directive';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,8 @@ import { AddAssignmentComponent } from './add-assignment/add-assignment.componen
 import { AssignmentsService } from '../shared/assignments.service';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
-
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-assignments',
   standalone: true,
@@ -30,7 +31,9 @@ import { AuthService } from '../shared/auth.service';
     MatDividerModule,
     MatButtonModule,
     MatDatepickerModule,
+    MatFormFieldModule,
     MatNativeDateModule,
+    MatPaginatorModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -38,6 +41,7 @@ import { AuthService } from '../shared/auth.service';
     AddAssignmentComponent,
     RouterOutlet,
     RouterModule,
+    JsonPipe
   ],
   templateUrl: './assignments.component.html',
   styleUrls: ['./assignments.component.css'] // 注意是 styleUrls，且是数组
@@ -55,11 +59,12 @@ export class AssignmentsComponent implements OnInit {
   assignments!: Assignment[]
 
   //分页显示需要的属性properties
-  page: number = 1;
-  limit: number = 10;
-  totalDocs!: number;
-  totalPages!: number;
-  nextPage!: number;
+  pageEvent!: PageEvent;
+  page: number = 1; //对应 [pageIndex] 当前页
+  limit: number = 10; // 对应[pageSize] 每页显示数量
+  totalDocs!: number;//对应[length]le nombre de items 
+  totalPages!: number; //没有对应的
+  nextPage!: number; 
   prevPage!: number;
   hasPrevPage!: boolean;
   hasNextPage!: boolean;
@@ -118,5 +123,11 @@ export class AssignmentsComponent implements OnInit {
         window.location.reload();
       }
       )
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.limit = e.pageSize;
+    this.page = e.pageIndex;
   }
 }

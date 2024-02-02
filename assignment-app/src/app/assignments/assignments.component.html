@@ -23,3 +23,16 @@
         <mat-divider></mat-divider>
     </mat-list>
 </main>
+
+<mat-paginator #paginator
+               class="demo-paginator"
+               (page)="handlePageEvent($event)"
+               [length]="totalDocs"
+               [pageSize]="limit"
+               [disabled]="false"
+               [showFirstLastButtons]="true"
+               [pageSizeOptions]="[5,10,25]"
+               [hidePageSize]="false"
+               [pageIndex]="page"
+               aria-label="Select page">
+</mat-paginator>
