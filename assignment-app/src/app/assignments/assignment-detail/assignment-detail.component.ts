@@ -46,8 +46,11 @@ export class AssignmentDetailComponent implements OnInit {
   onAssignmentRendu() {
     if (this.assignmentTransmis) {
       this.assignmentTransmis.rendu = true
-      this.assignmentsService.updateAssignment(this.assignmentTransmis).subscribe(message => console.log(message))
-      this.router.navigate(['/home'])//网页跳转
+      this.assignmentsService.updateAssignment(this.assignmentTransmis).subscribe(message => {
+        console.log(message);
+        this.router.navigate(['/home'])//网页跳转
+      })
+      
     } else {
       console.error('Assignment is null, cannot Rendu.');
     }
@@ -55,7 +58,7 @@ export class AssignmentDetailComponent implements OnInit {
 
   onDelete() {
     if (this.assignmentTransmis) { // 确保 assignmentTransmis 不是 null
-      this.assignmentsService.deleteAssignment(this.assignmentTransmis).subscribe(
+      this.assignmentsService.deleteAssignmentByHttp(this.assignmentTransmis).subscribe(
         message => {
           console.log(message);
           this.assignmentTransmis = null; // 安全地将 assignmentTransmis 设置为 null

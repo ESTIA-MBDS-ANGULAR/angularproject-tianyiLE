@@ -3,7 +3,7 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { AssignmentDetailComponent } from './assignments/assignment-detail/assignment-detail.component';
 import { AuthService } from './shared/auth.service';
@@ -36,12 +36,12 @@ import { MatListModule } from '@angular/material/list';
 export class AppComponent {
   opened: boolean = false
   title = 'Application de gestion des devoirs arendre(Assignments)';
-  constructor(public authService: AuthService, private router: Router, private assignmentService: AssignmentsService) {}
+  constructor(public authService: AuthService, private router: Router, private assignmentService: AssignmentsService) { }
 
   fakeLogin() {
-    if(!this.authService.loggedIn){
+    if (!this.authService.loggedIn) {
       this.authService.logIn()
-    }else {
+    } else {
       this.authService.logOut()
       //et on renvoie vers la home page
       this.router.navigate(['/home'])
@@ -56,5 +56,17 @@ export class AppComponent {
   onLogout() {
     this.authService.logOut()
     this.router.navigate(['/home'])
+  }
+
+  peuplerBD() {
+    this.assignmentService.peuplerBDavecForkJoin().subscribe(() => {
+      console.log("LA BD A ETE PEUPLEE, TOUS LES ASSIGNMENTSAJOUTES,ON RE-AFFICHE LA LISTE");
+      // replaceUrl = true = force le refresh, même si
+      // on est déjà sur la page d’accueil
+      // Marche plus avec la dernière version d’angular
+      //this.router.navigate(["/home"], {replaceUrl:true});
+      // ceci marche….
+      window.location.reload();
+    })
   }
 }

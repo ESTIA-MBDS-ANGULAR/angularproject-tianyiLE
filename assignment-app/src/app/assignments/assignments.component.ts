@@ -54,9 +54,32 @@ export class AssignmentsComponent implements OnInit {
   assignmentSelectionne!: Assignment;
   assignments!: Assignment[]
 
-  constructor(private assignmentsService: AssignmentsService, public authService: AuthService,private router: Router) { }
+  //分页显示需要的属性properties
+  page: number = 1;
+  limit: number = 10;
+  totalDocs!: number;
+  totalPages!: number;
+  nextPage!: number;
+  prevPage!: number;
+  hasPrevPage!: boolean;
+  hasNextPage!: boolean;
+
+
+  constructor(private assignmentsService: AssignmentsService, public authService: AuthService, private router: Router) { }
   ngOnInit(): void {
-    this.getAssignments()
+    // this.getAssignments()
+    this.assignmentsService.getAssignmentsPagine(this.page, this.limit).subscribe(
+      data => {
+        this.assignments = data.docs;
+        this.totalDocs = data.totalDocs;
+        this.totalPages = data.totalPages;
+        this.nextPage = data.nextPage;
+        this.prevPage = data.prevPage;
+        this.hasPrevPage = data.hasPrevPage;
+        this.hasNextPage = data.hasNextPage;
+        console.log("Données recues");
+      }
+    )
   }
   onSubmit() {
     console.log(this.nomDevoir);
@@ -75,8 +98,25 @@ export class AssignmentsComponent implements OnInit {
   }
 
   getAssignments() {
-    this.assignmentsService.getAssignments().subscribe(assignments => {this.assignments = assignments; console.log(this.assignments);
+    this.assignmentsService.getAssignmentsByHttp().subscribe(assignments => {
+      this.assignments = assignments; console.log(this.assignments);
     })
-    
+  }
+
+  peuplerBD() {
+    // version naive et simple
+    //this.assignmentsService.peuplerBD();
+    // meilleure version :
+    this.assignmentsService.peuplerBDavecForkJoin()
+      .subscribe(() => {
+        console.log("LA BD A ETE PEUPLEE, TOUS LES ASSIGNMENTSAJOUTES, ON RE-AFFICHE LA LISTE");
+        // replaceUrl = true = force le refresh, même si
+        // on est déjà sur la page d’accueil
+        // Marche plus avec la dernière version d’angular
+        //this.router.navigate(["/home"], {replaceUrl:true});
+        // ceci marche….
+        window.location.reload();
+      }
+      )
   }
 }

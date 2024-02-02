@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of, tap, catchError, forkJoin } from 'rxjs';
 import { Assignment } from '../assignments/assignment.model';
 import { LoggingService } from './logging.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { bdInitialAssignments } from './data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssignmentsService {
+  private HttpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
   url = 'http://localhost:8010/api/assignments'
   resultDeHttp:any
   assignments: Assignment[] = [
@@ -33,9 +39,17 @@ export class AssignmentsService {
   constructor(private loggingService:LoggingService, private http: HttpClient) { }
 
   getAssignment(id:number): Observable<Assignment | undefined> {
-    const assignment:Assignment|undefined = this.assignments.find(item => item.id === id)
-    return of(assignment)
-    // return this.http.get<Assignment>(this.url + "/" + id)
+    // const assignment:Assignment|undefined = this.assignments.find(item => item.id === id)
+    // return of(assignment)
+    return this.http.get<Assignment>(this.url + "/" + id).pipe(map(a => {
+      a.nom += " transforme avec un pipe..."
+      return a
+    }),
+    tap( _ => {
+      console.log("tap:assignment avecid = "+ id + " requete GET envoyée sur MongoDB cloud");
+    }),
+    catchError(this.handleError<Assignment>(`getAssignment(id=${id})`))
+    )
   }
 
   getAssignments(): Observable<Assignment[]> {
@@ -47,17 +61,18 @@ export class AssignmentsService {
   }
 
   addAssignment(assignment: Assignment): Observable<any> {
-    this.assignments.push(assignment)
-    return of('Assignment service: Assignment ajouté')
-    // return this.http.post<Assignment>(this.url, assignment)
+    // this.assignments.push(assignment)
+    // return of('Assignment service: Assignment ajouté')
+    return this.http.post<Assignment>(this.url, assignment, this.HttpOptions)
   }
   
-  updateAssignment(assignment: Assignment): Observable<string> {
-    const renduAssignment = this.assignments.find(item => item.nom === assignment.nom)
-    if(renduAssignment) {
-      renduAssignment.rendu = true
-    }
-    return of('Assignment service: Assignment modifié!')
+  updateAssignment(assignment: Assignment): Observable<any> {
+    // const renduAssignment = this.assignments.find(item => item.nom === assignment.nom)
+    // if(renduAssignment) {
+    //   renduAssignment.rendu = true
+    // }
+    // return of('Assignment service: Assignment modifié!')
+    return this.http.put<Assignment>(this.url, assignment)
   }
 
   deleteAssignment(assignment: Assignment): Observable<string> {
@@ -65,4 +80,36 @@ export class AssignmentsService {
     this.assignments.splice(pos,1)
     return of('Assignment service: assignment supprimé')
   }
+
+  deleteAssignmentByHttp(assignment: Assignment): Observable<any> {
+    let deleteURL = this.url + "/" + assignment._id
+    return this.http.delete(deleteURL)
+  }
+
+  private handleError<T>(operation: any, result?: T) {
+    return (error: any): Observable<T> => {
+    console.log(error); // pour afficher dans la console
+    console.log(operation + ' a échoué ' + error.message);
+    return of(result as T);
+    }
+   }
+
+   peuplerBDavecForkJoin():Observable<any> {
+    let appelsVersAddAssignment:Observable<any>[] = [];
+    bdInitialAssignments.forEach(a => {
+    const nouvelAssignment = new Assignment();
+    nouvelAssignment.nom = a.nom;
+    nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
+    nouvelAssignment.rendu = a.rendu;
+    
+   appelsVersAddAssignment.push(this.addAssignment(nouvelAssignment))
+    });
+    console.log("peuplerBDavecForkJoin被调用了");
+    
+    return forkJoin(appelsVersAddAssignment);
+    }
+
+    getAssignmentsPagine(page:number, limit:number) : Observable<any> {
+      return this.http.get<any>(this.url + "?page=" + "&limit" + limit )
+    }
 }

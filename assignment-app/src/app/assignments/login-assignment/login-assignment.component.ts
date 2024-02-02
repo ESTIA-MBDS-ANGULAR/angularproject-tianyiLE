@@ -46,4 +46,13 @@ export class LoginAssignmentComponent implements OnInit {
       console.log('Login failed. Please check your username and password.')
     }
   }
+
+  onLoginAdminDirectly() {
+    this.authService.logInByNomEtPWD("admin", "Peter", "12345678")
+    if (this.authService.loggedIn) {
+      this.router.navigate(['/home'])
+    } else {
+      console.log('Login failed. Please check your username and password.')
+    }
+  }
 }

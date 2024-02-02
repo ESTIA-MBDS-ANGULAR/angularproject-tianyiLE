@@ -10,6 +10,10 @@
         </button>
         <a routerLink="/home"><span>My App</span></a>
         <span class="example-spacer"></span>
+
+        <button 
+        (click)="peuplerBD()"
+        mat-raised-button color="warn">PeuplerBD</button>
         @if (!authService.loggedIn) {
             <a routerLink="/login">
                 <button mat-raised-button color="accent">Log in</button>
