@@ -44,8 +44,23 @@ git push --tags
 
 
 
+### Pour le page Login
 
+user
 
+```bash
+role: user
+nom: Peter
+password: 123456
+```
+
+admin
+
+```bash
+role: admin
+nom: Peter
+password: 12345678
+```
 
 
 
