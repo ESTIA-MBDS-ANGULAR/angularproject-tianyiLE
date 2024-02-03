@@ -41,7 +41,7 @@ mat-drawer {
 }
 
 mat-drawer-container {
-    height: 600px;
+    /* height: 600px; */
 }
 
 mat-toolbar a {

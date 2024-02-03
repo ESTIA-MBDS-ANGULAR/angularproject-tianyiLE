@@ -14,7 +14,9 @@ export class AssignmentsService {
       'Content-Type': 'application/json'
     })
   }
-  url = 'http://localhost:8010/api/assignments'
+  url = 'https://tianyile-apicoursangular2024.onrender.com/api/assignments'
+
+  // url = "http://localhost:8010/api/assignments"  
   resultDeHttp:any
   assignments: Assignment[] = [
     {
@@ -98,6 +100,7 @@ export class AssignmentsService {
     let appelsVersAddAssignment:Observable<any>[] = [];
     bdInitialAssignments.forEach(a => {
     const nouvelAssignment = new Assignment();
+    nouvelAssignment.id = a.id;
     nouvelAssignment.nom = a.nom;
     nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
     nouvelAssignment.rendu = a.rendu;
@@ -110,6 +113,14 @@ export class AssignmentsService {
     }
 
     getAssignmentsPagine(page:number, limit:number) : Observable<any> {
-      return this.http.get<any>(this.url + "?page=" + "&limit" + limit )
+      return this.http.get<any>(this.url + "?page=" +page + "&limit=" + limit )
+    }
+
+    deleteAllAssignments(): Observable<any> {
+      const url = `${this.url}/all`; // Adjust if your endpoint URL is different
+      return this.http.delete(url, this.HttpOptions)
+        .pipe(
+          catchError(this.handleError<any>('deleteAllAssignments'))
+        );
     }
 }

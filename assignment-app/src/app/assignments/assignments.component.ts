@@ -73,18 +73,7 @@ export class AssignmentsComponent implements OnInit {
   constructor(private assignmentsService: AssignmentsService, public authService: AuthService, private router: Router) { }
   ngOnInit(): void {
     // this.getAssignments()
-    this.assignmentsService.getAssignmentsPagine(this.page, this.limit).subscribe(
-      data => {
-        this.assignments = data.docs;
-        this.totalDocs = data.totalDocs;
-        this.totalPages = data.totalPages;
-        this.nextPage = data.nextPage;
-        this.prevPage = data.prevPage;
-        this.hasPrevPage = data.hasPrevPage;
-        this.hasNextPage = data.hasNextPage;
-        console.log("Données recues");
-      }
-    )
+    this.getAssignmentsPagineByService()
   }
   onSubmit() {
     console.log(this.nomDevoir);
@@ -125,9 +114,27 @@ export class AssignmentsComponent implements OnInit {
       )
   }
 
+  getAssignmentsPagineByService() {
+    this.assignmentsService.getAssignmentsPagine(this.page, this.limit).subscribe(
+      data => {
+        this.assignments = data.docs;//获取的assignment赋值
+        this.totalDocs = data.totalDocs;
+        this.totalPages = data.totalPages;
+        this.nextPage = data.nextPage;
+        this.prevPage = data.prevPage;
+        this.hasPrevPage = data.hasPrevPage;
+        this.hasNextPage = data.hasNextPage;
+        console.log("Données recues");
+      }
+    )
+  }
+
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
-    this.limit = e.pageSize;
+    this.limit = e.pageSize;  
     this.page = e.pageIndex;
+    this.getAssignmentsPagineByService()
+    console.log('当前页是', this.page, '一页装', this.limit, '个');
+    
   }
 }

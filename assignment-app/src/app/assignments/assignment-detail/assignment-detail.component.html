@@ -9,9 +9,6 @@
             {{assignmentTransmis.dateDeRendu | date: 'dd/MM/yyyy'}}
         </mat-card-subtitle>
         <div class="card-actions">
-            <!-- <a [routerLink]="['/assignment', 1, 'edit']" >
-                <button (click)="onClickEdit()" mat-stroked-button color="primary">Edit</button>
-            </a> -->
             <button (click)="onClickEdit()" 
             [disabled]="!isAdmin()"
             mat-stroked-button color="primary">Edit</button>

@@ -58,6 +58,8 @@ app.route(prefix + '/assignments')
   app.route(prefix + '/assignments')
   .put(assignment.updateAssignment);
 
+  app.delete('/api/assignments', assignment.deleteAllAssignments);
+
 // On démarre le serveur
 app.listen(port, "0.0.0.0");
 console.log('Serveur démarré sur http://localhost:' + port);

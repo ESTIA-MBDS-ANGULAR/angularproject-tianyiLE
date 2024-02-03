@@ -69,4 +69,16 @@ export class AppComponent {
       window.location.reload();
     })
   }
+
+  onDeleteAllAssignments() {
+    this.assignmentService.deleteAllAssignments().subscribe(
+      (data) => {
+        console.log(data.message); // or handle the response as needed
+        // Update the assignments list if necessary
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 }

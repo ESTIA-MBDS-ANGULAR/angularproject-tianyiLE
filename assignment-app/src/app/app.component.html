@@ -12,6 +12,9 @@
         <span class="example-spacer"></span>
 
         <button 
+        (click)="onDeleteAllAssignments()"
+        mat-raised-button color="warn">DeleteALL</button>
+        <button 
         (click)="peuplerBD()"
         mat-raised-button color="warn">PeuplerBD</button>
         @if (!authService.loggedIn) {
