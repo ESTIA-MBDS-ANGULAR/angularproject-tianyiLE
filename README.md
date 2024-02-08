@@ -1,3 +1,24 @@
+# Rendu3
+
+[Le lien Front-end](https://tianyileangualrfrondend2024.onrender.com/): https://tianyileangualrfrondend2024.onrender.com/
+
+le lien back-end : https://tianyile-apicoursangular2024.onrender.com/api/assignments
+
+## Ce que j'ai fini
+
+- [x]  Intégrer les rendus 1 et 2 dans le projet
+- [x]  API Rest et HttpClient
+- [x]  base de données MongoDB avec des centaines d'enregistrements
+- [x]  Pagination avec GUI de pagination
+- [x]  Hébergement sur Heroku ou autre
+- [ ]  Ajouter de nouvelles données dans les assignments (nom du prof, matière, note sur 20, etc.)
+- [ ]  Afficher les assignments dans une [table angular material](https://material.angular.io/components/table/overview) avec tri et page de header fixe.
+- [ ]  Toute amélioration dans le but de rendre le projet plus professionnel sera appréciée
+
+
+
+[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=13591615)
+
 # Angular-start
 ## Leo Donati, Université Côte d'Azur (UniCA)
 Repository de démarrage pour votre TD de Angular
@@ -43,8 +64,23 @@ git push --tags
 
 
 
+### Pour le page Login
 
+user
 
+```bash
+role: user
+nom: Peter
+password: 123456
+```
+
+admin
+
+```bash
+role: admin
+nom: Peter
+password: 12345678
+```
 
 
 
